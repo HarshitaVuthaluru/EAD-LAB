@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chessboard with Images</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #fffefe;
+  }
+  .chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    border: 3px solid #000000;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  .box {
+    width: 60px;
+    height: 60px;
+    font-size: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    cursor: default;
+  }
+  .all-img {
+    width: 40px;
+    height: 40px;
+  }
+</style>
+</head>
+<body>
+  <div class="chessboard">
+    <!-- Example with IDs and text for pieces -->
+    <!-- Row 8 -->
+    <div class="box" id="a8">Brook</div>
+    <div class="box" id="b8">Bknight</div>
+    <div class="box" id="c8">Bbishop</div>
+    <div class="box" id="d8">Bqueen</div>
+    <div class="box" id="e8">Bking</div>
+    <div class="box" id="f8">Bbishop</div>
+    <div class="box" id="g8">Bknight</div>
+    <div class="box" id="h8">Brook</div>
+
+    <!-- Row 7 -->
+    <div class="box" id="a7">Bpawn</div>
+    <div class="box" id="b7">Bpawn</div>
+    <div class="box" id="c7">Bpawn</div>
+    <div class="box" id="d7">Bpawn</div>
+    <div class="box" id="e7">Bpawn</div>
+    <div class="box" id="f7">Bpawn</div>
+    <div class="box" id="g7">Bpawn</div>
+    <div class="box" id="h7">Bpawn</div>
+
+    <!-- Rows 6 to 3 empty -->
+    <div class="box" id="a6"></div>
+    <div class="box" id="b6"></div>
+    <div class="box" id="c6"></div>
+    <div class="box" id="d6"></div>
+    <div class="box" id="e6"></div>
+    <div class="box" id="f6"></div>
+    <div class="box" id="g6"></div>
+    <div class="box" id="h6"></div>
+
+    <div class="box" id="a5"></div>
+    <div class="box" id="b5"></div>
+    <div class="box" id="c5"></div>
+    <div class="box" id="d5"></div>
+    <div class="box" id="e5"></div>
+    <div class="box" id="f5"></div>
+    <div class="box" id="g5"></div>
+    <div class="box" id="h5"></div>
+
+    <div class="box" id="a4"></div>
+    <div class="box" id="b4"></div>
+    <div class="box" id="c4"></div>
+    <div class="box" id="d4"></div>
+    <div class="box" id="e4"></div>
+    <div class="box" id="f4"></div>
+    <div class="box" id="g4"></div>
+    <div class="box" id="h4"></div>
+
+    <div class="box" id="a3"></div>
+    <div class="box" id="b3"></div>
+    <div class="box" id="c3"></div>
+    <div class="box" id="d3"></div>
+    <div class="box" id="e3"></div>
+    <div class="box" id="f3"></div>
+    <div class="box" id="g3"></div>
+    <div class="box" id="h3"></div>
+
+    <!-- Row 2 -->
+    <div class="box" id="a2">Wpawn</div>
+    <div class="box" id="b2">Wpawn</div>
+    <div class="box" id="c2">Wpawn</div>
+    <div class="box" id="d2">Wpawn</div>
+    <div class="box" id="e2">Wpawn</div>
+    <div class="box" id="f2">Wpawn</div>
+    <div class="box" id="g2">Wpawn</div>
+    <div class="box" id="h2">Wpawn</div>
+
+    <!-- Row 1 -->
+    <div class="box" id="a1">Wrook</div>
+    <div class="box" id="b1">Wknight</div>
+    <div class="box" id="c1">Wbishop</div>
+    <div class="box" id="d1">Wqueen</div>
+    <div class="box" id="e1">Wking</div>
+    <div class="box" id="f1">Wbishop</div>
+    <div class="box" id="g1">Wknight</div>
+    <div class="box" id="h1">Wrook</div>
+  </div>
+
+<script>
+function insertImage() {
+  document.querySelectorAll('.box').forEach(box => {
+    const piece = box.innerText.trim();
+    if(piece.length > 0) {
+      box.innerHTML = `<img class="all-img" src="images/${piece}.png" alt="${piece}">`;
+      box.style.cursor = 'default';
+    }
+  });
+}
+
+function coloring() {
+  // a-h letters to 1-8 numbers (a=1,... h=8)
+  const files = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8};
+  document.querySelectorAll('.box').forEach(box => {
+    const id = box.id; // e.g. 'a8'
+    const file = id[0];
+    const rank = parseInt(id[1]);
+    if(((files[file] + rank) % 2) === 0) {
+      box.style.backgroundColor = 'rgb(232, 235, 239)'; // light squares
+    } else {
+      box.style.backgroundColor = 'rgb(125, 135, 150)'; // dark squares
+    }
+  });
+}
+
+coloring();
+insertImage();
+</script>
+</body>
+</html>
