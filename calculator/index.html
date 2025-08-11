@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Calculator</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f0f0f0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  .calculator {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #000;
+    width: 280px;
+  }
+  .display {
+    background: #444;
+    color: #fff;
+    font-size: 2rem;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: right;
+    margin-bottom: 15px;
+    user-select: none;
+    min-height: 50px;
+  }
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  button {
+    padding: 15px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background: #555;
+  }
+  button.operator {
+    background: #f57c00;
+  }
+  button.operator:hover {
+    background: #ff9800;
+  }
+  button.equal {
+    grid-column: span 2;
+    background: #009688;
+  }
+  button.equal:hover {
+    background: #26a69a;
+  }
+  button.clear {
+    background: #d32f2f;
+  }
+  button.clear:hover {
+    background: #f44336;
+  }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+  <div id="display" class="display">0</div>
+  <div class="buttons">
+    <button class="clear">C</button>
+    <button class="operator">/</button>
+    <button class="operator">*</button>
+    <button class="operator">-</button>
+
+    <button>7</button>
+    <button>8</button>
+    <button>9</button>
+    <button class="operator">+</button>
+
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <button>=</button>
+
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>0</button>
+
+    <button>.</button>
+  </div>
+</div>
+
+<script>
+  const display = document.getElementById('display');
+  const buttons = document.querySelectorAll('button');
+  let currentInput = '';
+  let resetNext = false;
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const value = button.textContent;
+
+      if (button.classList.contains('clear')) {
+        currentInput = '';
+        display.textContent = '0';
+        resetNext = false;
+        return;
+      }
+
+      if (button.classList.contains('operator')) {
+        if (resetNext) resetNext = false;
+        // prevent two operators in a row
+        if (currentInput === '' && value !== '-') return; // don't allow operator except minus at start
+        if (/[+\-*/]$/.test(currentInput)) {
+          currentInput = currentInput.slice(0, -1) + value;
+        } else {
+          currentInput += value;
+        }
+        display.textContent = currentInput;
+        return;
+      }
+
+      if (value === '=') {
+        try {
+          // Evaluate the expression safely
+          const result = eval(currentInput);
+          display.textContent = result;
+          currentInput = result.toString();
+          resetNext = true;
+        } catch {
+          display.textContent = 'Error';
+          currentInput = '';
+          resetNext = true;
+        }
+        return;
+      }
+
+      // If resetNext is true (after equals), start fresh
+      if (resetNext) {
+        currentInput = '';
+        resetNext = false;
+      }
+
+      // Avoid multiple decimals in the current number
+      if (value === '.') {
+        // Check the last number portion for decimal point
+        const parts = currentInput.split(/[\+\-\*\/]/);
+        const lastPart = parts[parts.length - 1];
+        if (lastPart.includes('.')) return;
+        if (lastPart === '') currentInput += '0'; // if '.' after operator, prepend '0'
+      }
+
+      currentInput += value;
+      display.textContent = currentInput;
+    });
+  });
+</script>
+
+</body>
+</html>
